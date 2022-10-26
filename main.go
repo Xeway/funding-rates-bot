@@ -32,5 +32,9 @@ func FetchAPI(url string) models.FundingRates {
 	var fundingRates models.FundingRates
 	json.Unmarshal(responseData, &fundingRates)
 
+	if !fundingRates.Success {
+		log.Fatal("API error.")
+	}
+
 	return fundingRates
 }
