@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math"
 	"net/http"
 
 	"github.com/Xeway/funding-rates-bot/models"
@@ -15,7 +16,9 @@ const FTX_API_URL = "https://ftx.com/api/funding_rates"
 func main() {
 	fundingRates := FetchAPI(FTX_API_URL)
 
-	fmt.Println(fundingRates)
+	bestFundingRate := FindBestOpportunity(fundingRates.Result)
+
+	fmt.Println(bestFundingRate)
 }
 
 func FetchAPI(url string) models.FundingRates {
@@ -37,4 +40,16 @@ func FetchAPI(url string) models.FundingRates {
 	}
 
 	return fundingRates
+}
+
+func FindBestOpportunity(fundingRates []models.Result) models.Result {
+	best := 0
+
+	for i := 1; i < len(fundingRates); i++ {
+		if math.Abs(fundingRates[i].Rate) > math.Abs(fundingRates[best].Rate) {
+			best = i
+		}
+	}
+
+	return fundingRates[best]
 }
