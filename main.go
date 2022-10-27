@@ -14,14 +14,14 @@ import (
 const FTX_API_URL = "https://ftx.com/api/funding_rates"
 
 func main() {
-	fundingRates := FetchAPI(FTX_API_URL)
+	fundingRates := FetchFundingRatesAPI(FTX_API_URL)
 
 	bestFundingRate := FindBestOpportunity(fundingRates.Result)
 
 	fmt.Println(bestFundingRate)
 }
 
-func FetchAPI(url string) models.FundingRates {
+func FetchFundingRatesAPI(url string) models.FundingRates {
 	res, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
