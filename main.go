@@ -3,10 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/joho/godotenv"
 	"io"
 	"log"
 	"math"
 	"net/http"
+	"os"
 
 	"github.com/Xeway/funding-rates-bot/models"
 )
@@ -17,6 +19,14 @@ func main() {
 	fundingRates := FetchFundingRatesAPI(FTX_API_URL)
 
 	bestFundingRate := FindBestOpportunity(fundingRates.Result)
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	FTX_API_KEY := os.Getenv("FTX_API_KEY")
+	FTX_API_SECRET := os.Getenv("FTX_API_SECRET")
 
 	fmt.Println(bestFundingRate)
 }
