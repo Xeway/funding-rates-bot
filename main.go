@@ -2,15 +2,13 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"github.com/Xeway/funding-rates-bot/models"
 	"github.com/joho/godotenv"
 	"io"
 	"log"
 	"math"
 	"net/http"
 	"os"
-
-	"github.com/Xeway/funding-rates-bot/models"
 )
 
 const FTX_API_URL = "https://ftx.com/api/funding_rates"
@@ -25,10 +23,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	FTX_API_KEY := os.Getenv("FTX_API_KEY")
-	FTX_API_SECRET := os.Getenv("FTX_API_SECRET")
-
-	fmt.Println(bestFundingRate)
+	PerformTrade(bestFundingRate)
 }
 
 func FetchFundingRatesAPI(url string) models.FundingRates {
@@ -62,4 +57,11 @@ func FindBestOpportunity(fundingRates []models.Result) models.Result {
 	}
 
 	return fundingRates[best]
+}
+
+func PerformTrade(bestFundingRate models.FundingRates) {
+	FTX_API_KEY := os.Getenv("FTX_API_KEY")
+	FTX_API_SECRET := os.Getenv("FTX_API_SECRET")
+
+	// perform trade with http post request
 }
