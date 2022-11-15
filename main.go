@@ -60,8 +60,8 @@ func FindBestOpportunity(fundingRates []models.Result) models.Result {
 }
 
 func PerformTrade(bestFundingRate models.FundingRates) {
-	FTX_API_KEY := os.Getenv("FTX_API_KEY")
-	FTX_API_SECRET := os.Getenv("FTX_API_SECRET")
+	BINANCE_API_KEY := os.Getenv("BINANCE_API_KEY")
+	BINANCE_API_SECRET := os.Getenv("BINANCE_API_SECRET")
 
 	// perform trade with http post request
 }
