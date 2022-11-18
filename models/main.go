@@ -1,12 +1,14 @@
 package models
 
-type FundingRates struct {
-	Success bool     `json:"success"`
-	Result  []Result `json:"result"`
+type Result struct {
+	Symbol               string  `json:"symbol"`
+	MarkPrice            float64 `json:"markPrice"`
+	IndexPrice           float64 `json:"indexPrice"`
+	EstimatedSettlePrice float64 `json:"estimatedSettlePrice"`
+	LastFundingRate      float64 `json:"lastFundingRate"`
+	InterestRate         float64 `json:"interestRate"`
+	NextFundingTime      int     `json:"nextFundingTime"`
+	Time                 int     `json:"time"`
 }
 
-type Result struct {
-	Future string  `json:"future"`
-	Rate   float64 `json:"rate"`
-	Time   string  `json:"time"`
-}
+type FundingRates []Result

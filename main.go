@@ -11,12 +11,12 @@ import (
 	"os"
 )
 
-const FTX_API_URL = "https://ftx.com/api/funding_rates"
+const BINANCE_API_URL = "https://fapi.binance.com/fapi/v1/premiumIndex"
 
 func main() {
-	fundingRates := FetchFundingRatesAPI(FTX_API_URL)
+	fundingRates := FetchFundingRatesAPI(BINANCE_API_URL)
 
-	bestFundingRate := FindBestOpportunity(fundingRates.Result)
+	bestFundingRate := FindBestOpportunity(fundingRates)
 
 	err := godotenv.Load()
 	if err != nil {
@@ -40,10 +40,6 @@ func FetchFundingRatesAPI(url string) models.FundingRates {
 	var fundingRates models.FundingRates
 	json.Unmarshal(responseData, &fundingRates)
 
-	if !fundingRates.Success {
-		log.Fatal("API error.")
-	}
-
 	return fundingRates
 }
 
@@ -51,7 +47,7 @@ func FindBestOpportunity(fundingRates []models.Result) models.Result {
 	best := 0
 
 	for i := 1; i < len(fundingRates); i++ {
-		if math.Abs(fundingRates[i].Rate) > math.Abs(fundingRates[best].Rate) {
+		if math.Abs(fundingRates[i].LastFundingRate) > math.Abs(fundingRates[best].LastFundingRate) {
 			best = i
 		}
 	}
@@ -59,7 +55,7 @@ func FindBestOpportunity(fundingRates []models.Result) models.Result {
 	return fundingRates[best]
 }
 
-func PerformTrade(bestFundingRate models.FundingRates) {
+func PerformTrade(bestFundingRate models.Result) {
 	BINANCE_API_KEY := os.Getenv("BINANCE_API_KEY")
 	BINANCE_API_SECRET := os.Getenv("BINANCE_API_SECRET")
 
