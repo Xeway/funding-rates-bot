@@ -3,12 +3,12 @@ package main
 import (
 	"encoding/json"
 	"github.com/Xeway/funding-rates-bot/models"
+	"github.com/Xeway/funding-rates-bot/utils"
 	"github.com/joho/godotenv"
 	"io"
 	"log"
 	"math"
 	"net/http"
-	"os"
 )
 
 const BINANCE_API_URL = "https://fapi.binance.com/fapi/v1/premiumIndex"
@@ -47,7 +47,7 @@ func FindBestOpportunity(fundingRates []models.Result) models.Result {
 	best := 0
 
 	for i := 1; i < len(fundingRates); i++ {
-		if math.Abs(fundingRates[i].LastFundingRate) > math.Abs(fundingRates[best].LastFundingRate) {
+		if math.Abs(utils.StringToFloat(fundingRates[i].LastFundingRate)) > math.Abs(utils.StringToFloat(fundingRates[best].LastFundingRate)) {
 			best = i
 		}
 	}
@@ -56,8 +56,8 @@ func FindBestOpportunity(fundingRates []models.Result) models.Result {
 }
 
 func PerformTrade(bestFundingRate models.Result) {
-	BINANCE_API_KEY := os.Getenv("BINANCE_API_KEY")
-	BINANCE_API_SECRET := os.Getenv("BINANCE_API_SECRET")
+	// BINANCE_API_KEY := os.Getenv("BINANCE_API_KEY")
+	// BINANCE_API_SECRET := os.Getenv("BINANCE_API_SECRET")
 
 	// perform trade with http post request
 }
