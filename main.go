@@ -7,7 +7,6 @@ import (
 	"github.com/joho/godotenv"
 	"io"
 	"log"
-	"math"
 	"net/http"
 )
 
@@ -47,9 +46,13 @@ func FindBestOpportunity(fundingRates []models.Result) models.Result {
 	best := 0
 
 	for i := 1; i < len(fundingRates); i++ {
-		if math.Abs(utils.StringToFloat(fundingRates[i].LastFundingRate)) > math.Abs(utils.StringToFloat(fundingRates[best].LastFundingRate)) {
+		if utils.StringToFloat(fundingRates[i].LastFundingRate) > utils.StringToFloat(fundingRates[best].LastFundingRate) {
 			best = i
 		}
+	}
+
+	if utils.StringToFloat(fundingRates[best].LastFundingRate) <= 0 {
+		log.Fatal("No positive funding rates")
 	}
 
 	return fundingRates[best]
